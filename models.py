@@ -36,6 +36,7 @@ class ShareLEvel(String,enum.Enum):
     FULL = "full_share"
     PARTIAL = "partial_share"
 
+#birthday share
 class BirthdayShare(Base):
     __tablename__ = "birthday_share"
     id = Column(Integer,primary_key=True,index=True)
