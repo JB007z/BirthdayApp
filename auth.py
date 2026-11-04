@@ -2,7 +2,7 @@ import os
 import models,db
 from sqlalchemy import String
 from dotenv import load_dotenv
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from fastapi import Depends,HTTPException,status
 from fastapi.security import OAuth2PasswordBearer
@@ -23,12 +23,20 @@ def create_hash(password:String):
 def verify_hash(plain_password:String,hash:String):
    return password_context.verify(plain_password,hash)
 
-
-
-#verify_hash
-
-
 #create_access_token
+def create_access_token(user_id:int):
+   expire = datetime.now(timzone.utc) + timedelta(minutes=30)
+   payload = {
+      "sub":str(user_id),
+      "expire":expire
+   }
+
+   token = jwt.encode(
+      payload,
+      SECRET_KEY,
+      algorith=ALGORITHM
+   )
+   return token
 
 
 #get_current_user
