@@ -5,27 +5,28 @@ class UserRepository:
     def __init__(self,db:AsyncSession):
         self.db = db
 
-    def get_by_id(self,user_id:int):
-        return self.db.query(User).filter(User.id == user_id).first()
-
+    async def get_by_id(self,user_id:int):
+        result = await self.db.query(User).filter(User.id == user_id).first()
+        return result
     
-    def get_by_email(self,user_email:str):
-        return self.db.query(User).filter(User.email == user_email).first
-    
-    def create(self,user:User):
-        self.db.add(user)
-        self.db.commit()
-        self.db.refresh(user)
+    async def get_by_email(self,user_email:str):
+        result = await self.db.query(User).filter(User.email == user_email).first
+        return result
+        
+    async def create(self,user:User):
+        await self.db.add(user)
+        await self.db.commit()
+        await self.db.refresh(user)
         return user
     
-    def delete(self,user_id:int):
+    async def delete(self,user_id:int):
         user = get_by_id(user_id)
         if user:
-            self.db.delete(user)
-            self.db.commit()
+            await self.db.delete(user)
+            await self.db.commit()
     
-    def update(self,user:User):
-        self.db.commit()
-        self.db.refresh(user)
+    async def update(self,user:User):
+        await self.db.commit()
+        await self.db.refresh(user)
 
         return user
